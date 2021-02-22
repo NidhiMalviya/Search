@@ -3,7 +3,7 @@ class ArticlesController < ApplicationController
 
   # GET /articles
   def index
-    offset = (params[:page_number].presence || 1) * 25
+    offset = (params[:page_number].presence || 1) * 50
     @articles = Article.all.order(updated_at: :desc).limit(offset)
 
     render json: @articles
@@ -16,6 +16,7 @@ class ArticlesController < ApplicationController
 
   # POST /articles
   def create
+    binding.pry
     @article = Article.new(article_params)
 
     if @article.save
@@ -50,6 +51,8 @@ class ArticlesController < ApplicationController
     render json: @articles
   end
 
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_article
@@ -58,6 +61,6 @@ class ArticlesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def article_params
-      params.require(:article).permit(:title, :description, :search)
+      params.require(:article).permit(:title, :description, :search, :article_image)
     end
 end
