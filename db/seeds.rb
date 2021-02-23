@@ -11,6 +11,11 @@
   article = Faker::Books::Dune
   Article.create(
     title: article.title,
-    description: article.quote
+    description: article.quote,
+    article_image: Base64.encode64(
+      File.open(
+        "#{Rails.root.join('db')}/user.png"
+      ).read
+    )
   )
 end

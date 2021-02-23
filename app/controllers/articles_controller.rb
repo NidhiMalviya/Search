@@ -16,8 +16,8 @@ class ArticlesController < ApplicationController
 
   # POST /articles
   def create
-    binding.pry
     @article = Article.new(article_params)
+    @article.article_image = Article.extract_file_path(article_params[:article_image])
 
     if @article.save
       render json: @article, status: :created, location: @article
