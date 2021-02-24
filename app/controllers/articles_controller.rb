@@ -4,8 +4,11 @@ class ArticlesController < ApplicationController
   # GET /articles
   def index
     offset = (params[:page_number].presence || 1) * 50
-    @articles = Article.all.order(updated_at: :desc).limit(offset)
+    page_number = 1
 
+    offset = (page_number - 1)  * 25
+
+    @articles = Article.all.order(updated_at: :desc).offset(offset).limit(25)
     render json: @articles
   end
 
@@ -16,8 +19,7 @@ class ArticlesController < ApplicationController
 
   # POST /articles
   def create
-    @article = Article.new(article_params)
-    @article.article_image = Article.extract_file_path(article_params[:article_image])
+    @article = Article.new(assemble_article_params)
 
     if @article.save
       render json: @article, status: :created, location: @article
@@ -28,7 +30,9 @@ class ArticlesController < ApplicationController
 
   # PATCH/PUT /articles/1
   def update
-    if @article.update(article_params)
+    # binding.pry
+    if @article.update(assemble_article_params)
+      @article.save
       render json: @article
     else
       render json: @article.errors, status: :unprocessable_entity
@@ -57,6 +61,13 @@ class ArticlesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_article
       @article = Article.find(params[:id])
+    end
+
+    def assemble_article_params
+      #binding.pry
+      article_prms = article_params.clone
+      article_prms[:article_image] = Article.extract_file_path(article_prms[:article_image])
+      article_prms
     end
 
     # Only allow a trusted parameter "white list" through.

@@ -11,7 +11,7 @@ class Article < ApplicationRecord
   def self.extract_file_path(dispatch_object)
     Base64.encode64(
       File.open(
-        (dispatch_object&.tempfile&.to_path || "#{Rails.root.join('db')}/user.png")
+        (dispatch_object&.tempfile&.to_path || "#{Rails.root}/user.png")
       ).read
     )
   end

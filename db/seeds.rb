@@ -14,7 +14,7 @@
     description: article.quote,
     article_image: Base64.encode64(
       File.open(
-        "#{Rails.root.join('db')}/user.png"
+        "#{Rails.root}/user.png"
       ).read
     )
   )
