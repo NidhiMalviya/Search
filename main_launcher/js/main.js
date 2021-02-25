@@ -1,35 +1,38 @@
 $(document).ready(function (params) {
   // Function for table load
-  function load_articles() {
-
+  function load_articles(current_page = 1) {
     var success_fun = function (data) {
       $("#content-space").html("");
       $('html, body').animate({
-        'scrollTop' : $("#content-space").position().top
+        'scrollTop': $("#content-space").position().top
       });
 
       data.forEach(function (article, index) {
         $("#content-space").append(`
-              <tr>
-                <th scope="row">${index + 1}</th>
-                <td>${article.title}</td>
-                <td>${article.description}</td>
-                <td>
-                  <img src="data:image/jpg;base64,${article.article_image}" alt="Girl in a jacket" height="auto" width="50px">
-                </td>
-                <td>
-                  <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-primary btn-sm edit-article" data-id=${article.id}>Edit</button>
-                    <button type="button" class="btn btn-secondary btn-sm delete-article" data-id=${article.id}>Delete</button>
-                  </div>
-                </td>
-              </tr>
-            `);
+            <tr>
+              <th scope="row">${index + 1}</th>
+              <td>${article.title}</td>
+              <td>${article.description}</td>
+              <td>
+                <img src="data:image/jpg;base64,${article.article_image}" height="auto" width="50px">
+              </td>
+              <td>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                  <button type="button" class="btn btn-primary btn-sm edit-article" data-id=${article.id}>Edit</button>
+                  <button type="button" class="btn btn-secondary btn-sm delete-article" data-id=${article.id}>Delete</button>
+                </div>
+              </td>
+            </tr>
+          `);
       });
     }
 
-    make_request('GET', "http://localhost:3000", {}, success_fun)
+    page_url = "http://localhost:3000?page_number=" + current_page;
+
+    make_request('GET', page_url, {}, success_fun)
   }
+
+  load_articles();
 
   // Edit User pre-processing
   $(document).on("click", ".edit-article", function (e) {
@@ -45,9 +48,8 @@ $(document).ready(function (params) {
       $("#preview-space").attr("src", ("data:image/jpg;base64," + data.article_image));
 
       $('html, body').animate({
-        'scrollTop' : $("#editing_space").position().top
+        'scrollTop': $("#editing_space").position().top
       });
-
 
       $(".common_form").attr("method_type", "PUT");
       $(".common_form").attr("url", url);
@@ -82,21 +84,21 @@ $(document).ready(function (params) {
       $("#content-space").html("");
       data.forEach(function (article, index) {
         $("#content-space").append(`
-              <tr>
-                <th scope="row">${index + 1}</th>
-                <span class="search-area">
-                  <td>${article.title}</td>
-                  <td>${article.description}</td>
-                  <td>${article.image}</td>
-                </span>
-                <td>
-                  <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-primary btn-sm edit-article" data-id=${article.id}>Edit</button>
-                    <button type="button" class="btn btn-secondary btn-sm delete-article" data-id=${article.id}>Delete</button>
-                  </div>
-                </td>
-              </tr>
-            `);
+            <tr>
+              <th scope="row">${index + 1}</th>
+              <span class="search-area">
+                <td>${article.title}</td>
+                <td>${article.description}</td>
+                <td>${article.image}</td>
+              </span>
+              <td>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                  <button type="button" class="btn btn-primary btn-sm edit-article" data-id=${article.id}>Edit</button>
+                  <button type="button" class="btn btn-secondary btn-sm delete-article" data-id=${article.id}>Delete</button>
+                </div>
+              </td>
+            </tr>
+          `);
       });
 
       $("#content-space").find(".highlight").removeClass("highlight");
@@ -104,20 +106,19 @@ $(document).ready(function (params) {
       var repstr = "<span class='highlight'>" + search + "</span>";
 
       if (search != "") {
-          $('#content-space').each(function() {
-              $(this).html($(this).html().replace(custfilter, repstr));
-          })
+        $('#content-space').each(function () {
+          $(this).html($(this).html().replace(custfilter, repstr));
+        })
       }
-
     }
-    make_request('GET', url, {}, success_fun)
+    make_request('GET', url, {}, success_fun);
   });
 
 
   // For submitting the common form
   $("form").on("submit", function (event) {
     event.preventDefault();
-
+    // validateForm();
     var formValues = new FormData(this);
     var method_type = $(".common_form").attr("method_type");
     var url = $(".common_form").attr("url");
@@ -140,7 +141,6 @@ $(document).ready(function (params) {
     success_fun = function (data) {
       load_articles();
       console.log(data);
-      $("#notification-area")
       notify('Article saved successfuly');
     }
 
@@ -168,20 +168,48 @@ $(document).ready(function (params) {
     });
   }
 
-  $('#preview-space').click(function(){
+  // function validateForm() {
+  //     // //debugger
+  //     // var x = article.title
+  //     // if (x == "") {
+  //     //   alert("Title must be filled out");
+  //     //   return false;
+  //     // // }
+  //     // if( document.common_form.title.value == "" ) {
+  //     //     alert( "Please provide your name!" );
+  //     //     document.myForm.Name.focus() ;
+  //     //     return false;
+  //     //  }
+  //     //  if( document.common_form.description.value == "" ) {
+  //     //     alert( "Please provide your Email!" );
+  //     //     document.myForm.EMail.focus() ;
+  //     //     return false;
+  //     //  }
+  //     debugger
+  //     var name=document.common_form.article[title].value;
+  //     // var name = document.forms["common_form"]["article[title]"];
+  //     if (name.value == "") {
+  //         window.alert("Please enter your title.");
+  //         name.focus();
+  //         return false;
+  //     }
+  //   }
+
+
+  $('#preview-space').click(function () {
     $("#exampleFormControlImage").click();
   })
 
-  $("#exampleFormControlImage").change(function(e) {
-      readURL(this);
-    }
+  $("#exampleFormControlImage").change(function (e) {
+    readURL(this);
+  }
   );
 
   function readURL(input) {
     if (input.files && input.files[0]) {
       var reader = new FileReader();
 
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         $('#preview-space').attr('src', e.target.result);
       }
 
@@ -189,6 +217,46 @@ $(document).ready(function (params) {
     }
   }
 
-  load_articles();
+  $("#prev_button").click(function (e) {
+    e.preventDefault();
+    $('html, body').animate({
+      'scrollTop': $("#content-space").position().top
+    });
+    current_page = $("#current-page").val();
+
+    if (current_page <= $(this).data("page")) {
+      notify("already on First page");
+    } else {
+      $("#next_button").data('page', current_page);
+      current_page = (current_page - 1);
+      $("#current-page").val(current_page);
+
+      if (current_page == 1) {
+        $(this).data("page", current_page);
+      } else {
+        $(this).data("page", (current_page - 1));
+      }
+      load_articles(current_page);
+    }
+   
+  });
+
+  $("#next_button").click(function (e) {
+    e.preventDefault();
+    current_page = $(this).data("page");
+    $("#current-page").val(current_page);
+    $(this).data("page", (current_page + 1));
+    $("#prev_button").data('page', (current_page - 1));
+    load_articles(current_page);
+  });
+
+
   // First time page load
+  // $('.sync-pagination').twbsPagination({
+  //     totalPages: 20,
+  //     onPageClick: function (evt, page) {
+  //         $('#content').text('Page ' + page);
+  //     }
+  // });
+
 });

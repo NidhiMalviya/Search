@@ -1,4 +1,5 @@
 class Article < ApplicationRecord
+  #validates :title, presence: { message: "must be given please" }
 
   def self.search(search)
     if search

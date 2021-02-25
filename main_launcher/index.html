@@ -10,7 +10,9 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js" integrity="sha512-zol3kFQ5tnYhL7PzGt0LnllHHVWRGt2bTCIywDiScVvLIlaDOVJ6sPdJTVi0m3rA660RT+yZxkkRzMbb1L8Zkw==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"
+    integrity="sha512-zol3kFQ5tnYhL7PzGt0LnllHHVWRGt2bTCIywDiScVvLIlaDOVJ6sPdJTVi0m3rA660RT+yZxkkRzMbb1L8Zkw=="
+    crossorigin="anonymous"></script>
   <link href="dist/css/toastme.css" rel="stylesheet" />
   <link href="css/main.css" rel="stylesheet" />
   <script src="js/main.js"></script>
@@ -51,6 +53,17 @@
     </table>
   </div>
 
+  <div class="pagination">
+    <a href="" class="prev_page" data-page="1" rel="prev start"
+      id="prev_button">&laquo; Previous</a>
+
+    <input type="hidden" id="current-page" value="1">
+    <!-- <input type="hidden" id="final-page" value="1"> -->
+
+    <a href="" class="next_page" data-page="2" rel="next" id="next_button">Next &raquo;</a>
+  </div>
+
+
   <br>
   <br>
   <br>
@@ -63,29 +76,25 @@
       <div id="editing_space"></div>
       <div class="form-group">
         <label for="exampleFormControlInput1">Title</label>
-        <input type="text" name="article[title]" class="form-control" id="exampleFormControlInput1">
+        <input type="text" name="article[title]" class="form-control" id="exampleFormControlInput1" required>
       </div>
       <div class="form-group">
         <label for="exampleFormControlTextarea1">Description</label>
-        <textarea name="article[description]" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <textarea name="article[description]" class="form-control" id="exampleFormControlTextarea1" rows="3"
+          required></textarea>
       </div>
 
       <div class="form-group">
         <label for="exampleFormControlImage">Image</label>
-        <input type="file" accept="image/*" name="article[article_image]" class="form-control" id="exampleFormControlImage">
-        <img src="../user.png" id="preview-space" alt="Girl in a jacket" height="auto" width="50px">
+        <input type="file" accept="image/*" name="article[article_image]" class="form-control"
+          id="exampleFormControlImage" required>
+        <img src="../user.png" id="preview-space" height="auto" width="50px">
       </div>
 
       <button type="submit" class="btn btn-primary mb-2">Save Article</button>
     </form>
   </div>
 
-
-  <!-- <div class="pagination">
-    <a href="/products?page=1" class="prev_page" data-page="" rel="prev start">&laquo; Previous</a>
-    <a href="/products?page=3" class="next_page" data-page="" rel="next">Next &raquo;</a>
-  </div> -->
-  <!-- <div id="pagination"></div> -->
 </body>
 
 </html>

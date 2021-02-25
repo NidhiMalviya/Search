@@ -3,8 +3,7 @@ class ArticlesController < ApplicationController
 
   # GET /articles
   def index
-    offset = (params[:page_number].presence || 1) * 50
-    page_number = 1
+    page_number = params[:page_number].to_i || 1
 
     offset = (page_number - 1)  * 25
 
