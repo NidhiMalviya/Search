@@ -1,6 +1,6 @@
 <html>
-
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>
     Client Page
   </title>
@@ -11,8 +11,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"
-    integrity="sha512-zol3kFQ5tnYhL7PzGt0LnllHHVWRGt2bTCIywDiScVvLIlaDOVJ6sPdJTVi0m3rA660RT+yZxkkRzMbb1L8Zkw=="
-    crossorigin="anonymous"></script>
+  integrity="sha512-zol3kFQ5tnYhL7PzGt0LnllHHVWRGt2bTCIywDiScVvLIlaDOVJ6sPdJTVi0m3rA660RT+yZxkkRzMbb1L8Zkw=="
+  crossorigin="anonymous"></script>
   <link href="dist/css/toastme.css" rel="stylesheet" />
   <link href="css/main.css" rel="stylesheet" />
   <script src="js/main.js"></script>
@@ -31,11 +31,13 @@
   <br>
 
   <div class="topnav">
+    <button type="button" class="btn btn-success ml-2" id="add-article" style="margin-left: 4%;">Add Article</button>
     <div class="search-container">
       <input class="search-input" type="text" placeholder="Search.." name="search">
       <button type="submit" class="fa fa-search search-article" data-id=${article.id}>Search</button>
     </div>
   </div>
+
 
   <div class="table-wrapper-scroll-y my-custom-scrollbar tableFixHead">
     <table class="table table-bordered table-striped mb-0">
@@ -53,13 +55,12 @@
     </table>
   </div>
 
+
+
+
   <div class="pagination">
-    <a href="" class="prev_page" data-page="1" rel="prev start"
-      id="prev_button">&laquo; Previous</a>
-
+    <a href="" class="prev_page" data-page="1" rel="prev start" id="prev_button">&laquo; Previous</a>
     <input type="hidden" id="current-page" value="1">
-    <!-- <input type="hidden" id="final-page" value="1"> -->
-
     <a href="" class="next_page" data-page="2" rel="next" id="next_button">Next &raquo;</a>
   </div>
 
@@ -81,20 +82,19 @@
       <div class="form-group">
         <label for="exampleFormControlTextarea1">Description</label>
         <textarea name="article[description]" class="form-control" id="exampleFormControlTextarea1" rows="3"
-          required></textarea>
+        required></textarea>
       </div>
 
       <div class="form-group">
         <label for="exampleFormControlImage">Image</label>
         <input type="file" accept="image/*" name="article[article_image]" class="form-control"
-          id="exampleFormControlImage" required>
+        id="exampleFormControlImage" required>
         <img src="../user.png" id="preview-space" height="auto" width="50px">
       </div>
 
       <button type="submit" class="btn btn-primary mb-2">Save Article</button>
     </form>
   </div>
-
 </body>
 
 </html>

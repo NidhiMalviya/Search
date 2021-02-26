@@ -2,29 +2,16 @@ $(document).ready(function (params) {
   // Function for table load
   function load_articles(current_page = 1) {
     var success_fun = function (data) {
-      $("#content-space").html("");
-      $('html, body').animate({
-        'scrollTop': $("#content-space").position().top
-      });
-
-      data.forEach(function (article, index) {
-        $("#content-space").append(`
-            <tr>
-              <th scope="row">${index + 1}</th>
-              <td>${article.title}</td>
-              <td>${article.description}</td>
-              <td>
-                <img src="data:image/jpg;base64,${article.article_image}" height="auto" width="50px">
-              </td>
-              <td>
-                <div class="btn-group" role="group" aria-label="Basic example">
-                  <button type="button" class="btn btn-primary btn-sm edit-article" data-id=${article.id}>Edit</button>
-                  <button type="button" class="btn btn-secondary btn-sm delete-article" data-id=${article.id}>Delete</button>
-                </div>
-              </td>
-            </tr>
-          `);
-      });
+      if (data.last_page == true) {
+        notify("Already on last page can't go any further");
+        $("#prev_button").click();
+      } else {
+        $("#content-space").html("");
+        $('html, body').animate({
+          'scrollTop': $("#content-space").position().top
+        });
+        render_articles(data.articles);
+       }
     }
 
     page_url = "http://localhost:3000?page_number=" + current_page;
@@ -33,6 +20,27 @@ $(document).ready(function (params) {
   }
 
   load_articles();
+
+  function render_articles(articles) {
+    articles.forEach(function (article, index) {
+      $("#content-space").append(`
+        <tr>
+          <th scope="row">${index + 1}</th>
+          <span class="search-area">
+            <td>${article.title}</td>
+            <td>${article.description}</td>
+            <td><img src="data:image/jpg;base64,${article.article_image}" height="auto" width="50px"></td>
+          </span>
+          <td>
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <button type="button" class="btn btn-primary btn-sm edit-article" data-id=${article.id}>Edit</button>
+              <button type="button" class="btn btn-secondary btn-sm delete-article" data-id=${article.id}>Delete</button>
+            </div>
+          </td>
+        </tr>
+      `);
+    });
+  }
 
   // Edit User pre-processing
   $(document).on("click", ".edit-article", function (e) {
@@ -82,25 +90,7 @@ $(document).ready(function (params) {
 
     var success_fun = function (data) {
       $("#content-space").html("");
-      data.forEach(function (article, index) {
-        $("#content-space").append(`
-            <tr>
-              <th scope="row">${index + 1}</th>
-              <span class="search-area">
-                <td>${article.title}</td>
-                <td>${article.description}</td>
-                <td>${article.image}</td>
-              </span>
-              <td>
-                <div class="btn-group" role="group" aria-label="Basic example">
-                  <button type="button" class="btn btn-primary btn-sm edit-article" data-id=${article.id}>Edit</button>
-                  <button type="button" class="btn btn-secondary btn-sm delete-article" data-id=${article.id}>Delete</button>
-                </div>
-              </td>
-            </tr>
-          `);
-      });
-
+      render_articles(data);
       $("#content-space").find(".highlight").removeClass("highlight");
       var custfilter = new RegExp(search, "ig");
       var repstr = "<span class='highlight'>" + search + "</span>";
@@ -168,34 +158,6 @@ $(document).ready(function (params) {
     });
   }
 
-  // function validateForm() {
-  //     // //debugger
-  //     // var x = article.title
-  //     // if (x == "") {
-  //     //   alert("Title must be filled out");
-  //     //   return false;
-  //     // // }
-  //     // if( document.common_form.title.value == "" ) {
-  //     //     alert( "Please provide your name!" );
-  //     //     document.myForm.Name.focus() ;
-  //     //     return false;
-  //     //  }
-  //     //  if( document.common_form.description.value == "" ) {
-  //     //     alert( "Please provide your Email!" );
-  //     //     document.myForm.EMail.focus() ;
-  //     //     return false;
-  //     //  }
-  //     debugger
-  //     var name=document.common_form.article[title].value;
-  //     // var name = document.forms["common_form"]["article[title]"];
-  //     if (name.value == "") {
-  //         window.alert("Please enter your title.");
-  //         name.focus();
-  //         return false;
-  //     }
-  //   }
-
-
   $('#preview-space').click(function () {
     $("#exampleFormControlImage").click();
   })
@@ -238,7 +200,6 @@ $(document).ready(function (params) {
       }
       load_articles(current_page);
     }
-   
   });
 
   $("#next_button").click(function (e) {
@@ -250,13 +211,12 @@ $(document).ready(function (params) {
     load_articles(current_page);
   });
 
-
-  // First time page load
-  // $('.sync-pagination').twbsPagination({
-  //     totalPages: 20,
-  //     onPageClick: function (evt, page) {
-  //         $('#content').text('Page ' + page);
-  //     }
-  // });
+  $(document).on('click', "#add-article", function (e) {
+    e.preventDefault();
+    console.log("Nidhi rigged the thing");
+    $('html, body').animate({
+      'scrollTop': $("#form-header").offset().top
+    });
+  });
 
 });

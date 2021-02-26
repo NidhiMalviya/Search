@@ -7,8 +7,12 @@ class ArticlesController < ApplicationController
 
     offset = (page_number - 1)  * 25
 
+    last_page = (Article.count.to_f / 25.0).ceil
+
+    last_page = last_page <= page_number
+
     @articles = Article.all.order(updated_at: :desc).offset(offset).limit(25)
-    render json: @articles
+    render json: { articles: @articles, last_page: last_page }
   end
 
   # GET /articles/1
@@ -53,7 +57,6 @@ class ArticlesController < ApplicationController
     logger.info()
     render json: @articles
   end
-
 
 
   private
